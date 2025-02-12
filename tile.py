@@ -19,7 +19,7 @@ class Tile:
     def y(self) -> int:
         """The y coordinate (i.e.: line index) of the tile."""
         return self._y
-    
+
     @property
     def color(self) -> pygame.Color:
         """The color of the tile."""
