@@ -10,7 +10,7 @@ import random
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0,)
-RED = (255, 0, 0)
+BLUE = (193, 225, 255)
 
 class Ant:
     """The ant."""
@@ -66,7 +66,7 @@ class Ant:
         # Changes the color and direction
         if tile.color == BLACK:
             self.turn_left()
-            tile.color = WHITE
+            tile.color = BLUE # This tile is white but has been visited
         else:
             self.turn_right()
             tile.color = BLACK
@@ -111,12 +111,12 @@ class Ant:
         pygame.draw.polygon(screen, color, points)
 
     @classmethod
-    def create_random(cls, board: Board) -> typing.Self:
+    def create(cls, board: Board) -> typing.Self:
         """Creates an ant directed UP and places it randomly on the board."""
 
         # Chooses the beginning tile
         random.seed()
-        x = random.randint(0, board.nb_cols)
-        y = random.randint(0, board.nb_lines)
+        x = board.nb_cols//2
+        y = 0, board.nb_lines//2
 
         return cls(x, y, direction = Dir.UP)

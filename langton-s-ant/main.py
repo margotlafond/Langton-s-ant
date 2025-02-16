@@ -2,9 +2,6 @@
 
 # Standard
 import logging
-import sys
-from pathlib import Path
-
 import colorlog
 
 # First party

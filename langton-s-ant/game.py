@@ -36,7 +36,7 @@ class Game:
 
         # Create the elements
         self._board = Board(self._screen, self._nb_lines, self._nb_cols, self._tile_size)
-        self._ant = Ant.create_random(self._board)
+        self._ant = Ant.create(self._board)
 
         # Screen creation
         screen_size = (self._width*self._tile_size,
@@ -64,12 +64,23 @@ class Game:
         # Initialize game
         self._init()
         i = 0
+        flag = True
 
         # Start pygame loop
-        while i < self._nb_steps:
+        while i < self._nb_steps and flag:
 
             # Wait 1/FPS second
             self._clock.tick(self._fps)
+
+            # Check for quit : closing window
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    flag = False
+                # Key press
+                if event.type == pygame.KEYDOWN:
+                    match event.key:
+                        case pygame.K_q:
+                            flag = False
 
             # Update object
             tile = self._board.get_tile(self._ant.x, self._ant.y)
@@ -77,13 +88,16 @@ class Game:
 
             # Display
             if self._gui:
+                # Caption title bar
+                pygame.display.set_caption(f"Langton's Ant - Step {i}")
+                # Draw board and ant
                 self._board.draw_board(self._ant, self._ant_color)
                 pygame.display.update()
 
             # Increase number of steps
             i += 1
         
-        # Updates output file and prints the result od the final state
+        # Updates output file and prints the result of the final state
         self._final_states = self._board.output(self._final_states, self._ant, i)
         with open(self._final_file, 'w') as f:
             yaml.safe_dump(self._final_states, f)

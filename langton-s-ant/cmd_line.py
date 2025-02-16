@@ -5,8 +5,8 @@ import argparse
 DEFAULT_STEPS = 10
 DEFAULT_TILE_SIZE = 20
 ANT_DEF_COLOR = (0, 0, 0)
-DEFAULT_FPS = 10
-MIN_FPS = 10
+DEFAULT_FPS = 3
+MIN_FPS = 3
 MAX_FPS = 30
 
 def read_args() -> argparse.Namespace:
