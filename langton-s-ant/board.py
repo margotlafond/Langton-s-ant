@@ -5,6 +5,7 @@
 import pygame
 
 from .tile import Tile
+from .ant import Ant
 
 WHITE = (255, 255, 255)
 
@@ -32,3 +33,8 @@ class Board:
     def get_tile(self, x: int, y: int) -> Tile:
         """Gives the tile at given coordinates."""
         return self._tiles[y][x]
+
+    def draw_board(self, ant: Ant, color: tuple) -> None:
+        for tile in self._tiles:
+            tile.draw(self._screen, self._tile_size)
+        ant.draw(self._screen, self._tile_size, color)

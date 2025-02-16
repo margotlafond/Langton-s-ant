@@ -32,5 +32,5 @@ class Tile:
 
     def draw(self, screen: pygame.Surface, size: int) -> None:
         """Draw the tile on screen."""
-        rect = pygame.Rect(self.x * size, self.y * size, size, size)
+        rect = pygame.Rect(self.x*size, self.y*size, size, size)
         pygame.draw.rect(screen, self.color, rect)

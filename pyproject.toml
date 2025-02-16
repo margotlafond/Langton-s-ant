@@ -21,4 +21,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-anttest = ".ant:move"
+ant = "langton_s_ant.main:main"

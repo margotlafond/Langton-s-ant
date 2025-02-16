@@ -10,6 +10,7 @@ import random
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0,)
+RED = (255, 0, 0)
 
 class Ant:
     """The ant."""
@@ -74,7 +75,7 @@ class Ant:
         self._x += self._dir[0]
         self._y += self._dir[1]
 
-    def draw(self, surface: pygame.Surface, tile_size: int, color: tuple) -> None:
+    def draw(self, screen: pygame.Surface, tile_size: int, color: tuple) -> None:
         """Draws the ant with an arrow pointing in its direction."""
         # Calculate the center of the tile where the ant is located
         center_x = self._x*tile_size + tile_size//2
@@ -107,7 +108,7 @@ class Ant:
                 (center_x + half_size, center_y + half_size)
             ]
 
-        pygame.draw.polygon(surface, color, points)
+        pygame.draw.polygon(screen, color, points)
 
     @classmethod
     def create_random(cls, board: Board) -> typing.Self:

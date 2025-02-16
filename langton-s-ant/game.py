@@ -13,7 +13,7 @@ class Game:
                  score_file: Path,
                  gui: bool,
                  logger_obj,
-                 width, height,
+                 width: int, height: int,
                  ) -> None:
         """Object initialization."""
         # Given arguments
@@ -46,7 +46,7 @@ class Game:
         pygame.init()
 
         # Initialize game
-        self._init() # à coder ?
+        #self._init() # à coder ?
         i = 0
 
         # Start pygame loop
@@ -60,7 +60,11 @@ class Game:
             self._ant.move(tile)
 
             # Display
-            pygame.display.update()
+            if self._gui:
+                self._board.draw_board(self._ant, self._ant_color)
+                pygame.display.update()
+
+            # Output file
 
             # Increase number of steps
             i += 1
