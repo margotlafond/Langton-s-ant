@@ -1,4 +1,5 @@
 import pygame
+import yaml
 from pathlib import Path
 
 from .ant import Ant
@@ -10,7 +11,7 @@ class Game:
     def __init__(self, nb_steps: int, tile_size: int, # noqa: PLR0913
                  fps: int,
                  ant_color: tuple,
-                 score_file: Path,
+                 final_file: Path,
                  gui: bool,
                  logger_obj,
                  width: int, height: int,
@@ -20,24 +21,39 @@ class Game:
         self._tile_size = tile_size
         self._fps = fps
         self._ant_color = ant_color
-        self._score_file = score_file
+        self._final_file = final_file
         self._nb_steps = nb_steps
         self._gui = gui
         self._logger = logger_obj
         self._logger.info("test")
-
-        # News parameters and objects
-        screen_size = (width*self._tile_size,
-                       height*self._tile_size)
-        self._screen = pygame.display.set_mode(screen_size)
-        self._nb_lines = height // self._tile_size
-        self._nb_cols = width // self._tile_size
-        self._board = Board(self._screen, self._nb_lines, self._nb_cols, tile_size)
-        self._ant = Ant.create_random(self._board)
+        self._width = width
+        self._height = height
         
 
+    def _init(self):
         # Create the clock
         self._clock = pygame.time.Clock()
+
+        # Create the elements
+        self._board = Board(self._screen, self._nb_lines, self._nb_cols, self._tile_size)
+        self._ant = Ant.create_random(self._board)
+
+        # Screen creation
+        screen_size = (self._width*self._tile_size,
+                       self._height*self._tile_size)
+        self._screen = pygame.display.set_mode(screen_size)
+        self._nb_lines = self._height // self._tile_size
+        self._nb_cols = self._width // self._tile_size
+
+        # Checks if the final output file exists
+        if self._final_file.exists():
+            with open(self._final_file, 'r') as f:
+                final_states = yaml.safe_load(f)
+            print (final_states)
+            self._final_states = final_states
+            self._logger.info("The output file was successfully readed.")
+        else:
+            self._final_states = []
 
     def start(self) -> None:
         """Start the game."""
@@ -46,7 +62,7 @@ class Game:
         pygame.init()
 
         # Initialize game
-        #self._init() # à coder ?
+        self._init()
         i = 0
 
         # Start pygame loop
@@ -64,10 +80,13 @@ class Game:
                 self._board.draw_board(self._ant, self._ant_color)
                 pygame.display.update()
 
-            # Output file
-
             # Increase number of steps
             i += 1
-
+        
+        # Updates output file and prints the result od the final state
+        self._final_states = self._board.output(self._final_states, self._ant, i)
+        with open(self._final_file, 'w') as f:
+            yaml.safe_dump(self._final_states, f)
+        
         # Terminate pygame
         pygame.quit()
